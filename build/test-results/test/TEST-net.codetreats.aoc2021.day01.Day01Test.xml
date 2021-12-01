@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="net.codetreats.aoc2021.day01.Day01Test" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-12-01T13:55:16" hostname="MARTIN-X230" time="0.137">
+  <properties/>
+  <testcase name="testPart01()" classname="net.codetreats.aoc2021.day01.Day01Test" time="0.098"/>
+  <testcase name="testPart02()" classname="net.codetreats.aoc2021.day01.Day01Test" time="0.013"/>
+  <testcase name="testPart01_dummyData()" classname="net.codetreats.aoc2021.day01.Day01Test" time="0.021"/>
+  <system-out><![CDATA[Read C:\Users\martin\code\aoc\aoc2021\src\main\kotlin\net\codetreats\aoc2021\day01\input.txt
+Read C:\Users\martin\code\aoc\aoc2021\src\main\kotlin\net\codetreats\aoc2021\day01\input.txt
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
