@@ -24,7 +24,10 @@ class Logger(private val tag: String, private val prefix: String) {
     }
 
     companion object {
-        val level: Level = Level.INFO
+        var level: Level = Level.INFO
+
+        fun forDay(dayOfMonth: Int, prefix: String = "Day${dayOfMonth.pad()}") =
+            Logger("Day${dayOfMonth.pad()}", prefix)
     }
 }
 
