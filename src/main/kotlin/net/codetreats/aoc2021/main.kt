@@ -2,6 +2,7 @@ package net.codetreats.aoc2021
 
 import net.codetreats.aoc2021.day01.Day01
 import net.codetreats.aoc2021.day02.Day02
+import net.codetreats.aoc2021.day03.Day03
 import net.codetreats.aoc2021.util.Level
 import net.codetreats.aoc2021.util.Logger
 import net.codetreats.aoc2021.util.pad
@@ -20,6 +21,7 @@ fun main() {
     val days = mutableMapOf<Int, Day<*>>()
     days[1] = Day01()
     days[2] = Day02()
+    days[3] = Day03()
 
     logger.info("Running AOC for day $dayOfMonth")
     val day = days.get(dayOfMonth)
