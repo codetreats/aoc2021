@@ -9,13 +9,13 @@ abstract class Day<T>(val dayOfMonth: Int) {
     protected var input : T = default()
 
     fun init() {
-        init(useDebug())
+        init(useDummy())
     }
 
-    fun init(debug:Boolean) {
-        val dir = "src/main/kotlin/net/codetreats/aoc2021/day" + dayOfMonth.toString().padStart(2, '0')
-        if (debug) {
-            initInput(read(dir, "debug.txt"))
+    fun init(dummy:Boolean) {
+        val dir = "src/main/resources/day" + dayOfMonth.toString().padStart(2, '0')
+        if (dummy) {
+            initInput(read(dir, "dummy.txt"))
         } else {
             initInput(read(dir, "input.txt"))
         }
@@ -64,7 +64,7 @@ abstract class Day<T>(val dayOfMonth: Int) {
 
     abstract fun run2(): String
 
-    open fun useDebug(): Boolean {
+    open fun useDummy(): Boolean {
         return false
     }
 

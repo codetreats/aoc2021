@@ -7,7 +7,7 @@ import net.codetreats.aoc2021.util.Logger
 class Day03 : Day<List<String>>(3) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDebug(): Boolean = false
+    override fun useDummy(): Boolean = false
 
     override fun convert(input: List<String>): List<String> = input
 
