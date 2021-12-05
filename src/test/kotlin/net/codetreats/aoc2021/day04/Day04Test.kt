@@ -1,5 +1,7 @@
 package net.codetreats.aoc2021.day04
 
+import net.codetreats.aoc2021.util.Level
+import net.codetreats.aoc2021.util.Logger
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -9,30 +11,30 @@ class Day04Test {
 
     @BeforeEach
     fun setup() {
-
+        Logger.level = Level.ERROR
     }
 
     @Test
     fun testPart01() {
         classUnderTest.init(false)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("16674", classUnderTest.run1())
     }
 
     @Test
     fun testPart01_dummyData() {
         classUnderTest.init(true)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("4512", classUnderTest.run1())
     }
 
     @Test
     fun testPart02() {
         classUnderTest.init(false)
-        assertEquals("", classUnderTest.run2())
+        assertEquals("7075", classUnderTest.run2())
     }
 
     @Test
     fun testPart02_dummyData() {
         classUnderTest.init(true)
-        assertEquals("", classUnderTest.run2())
+        assertEquals("1924", classUnderTest.run2())
     }
 }
