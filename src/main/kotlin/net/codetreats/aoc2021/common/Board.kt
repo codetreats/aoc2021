@@ -1,0 +1,59 @@
+package net.codetreats.aoc2021.common
+
+open class Board<T>(private val width: Int, private val height: Int, private val initialValue: T) {
+    protected val content = mutableListOf<T>()
+
+    init {
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                content.add(initialValue)
+            }
+        }
+    }
+
+    fun set(x: Int, y: Int, value: T) {
+        if (x in 0 until width && y in 0 until height) {
+            content[y * width + x] = value
+        }
+    }
+
+    fun get(x: Int, y: Int): DataPoint<T> = getOrNull(x, y)!!
+
+    fun getOrNull(x: Int, y: Int) : DataPoint<T>? {
+        if (x in 0 until width && y in 0 until height) {
+            return DataPoint<T>(x, y, content[y * width + x])
+        }
+        return null
+    }
+
+    fun neighbors(x: Int, y: Int, withDiag: Boolean = false, withSelf: Boolean = false) : List<DataPoint<T>> {
+        val neighbors = mutableListOf<DataPoint<T>?>()
+        neighbors.add(getOrNull(x - 1, y))
+        neighbors.add(getOrNull(x + 1, y))
+        neighbors.add(getOrNull(x, y - 1))
+        neighbors.add(getOrNull(x, y + 1))
+        if (withDiag) {
+            neighbors.add(getOrNull(x - 1, y - 1))
+            neighbors.add(getOrNull(x + 1, y + 1))
+            neighbors.add(getOrNull(x - 1, y + 1))
+            neighbors.add(getOrNull(x + 1, y - 1))
+        }
+        if (withSelf) {
+            neighbors.add(getOrNull(x, y))
+        }
+        return neighbors.filterNotNull().map { it!! }
+    }
+
+    override fun toString(): String {
+        var s = StringBuilder()
+        var length = 0
+        content.forEach {
+            length++
+            if (length % width == 0) {
+                s.appendln()
+            }
+            s.append(it)
+        }
+        return s.toString()
+    }
+}
