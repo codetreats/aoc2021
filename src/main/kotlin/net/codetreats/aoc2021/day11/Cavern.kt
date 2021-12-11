@@ -11,7 +11,7 @@ class Cavern(width: Int, height: Int) : Board<Octopus>(width, height, Octopus(0,
         var result = 0L
         logger.info("Before:$this")
         for (i in 1 .. steps) {
-            increase()
+            content.forEach { it.increase() }
             result += flash()
             logger.info("After $i:$this")
         }
