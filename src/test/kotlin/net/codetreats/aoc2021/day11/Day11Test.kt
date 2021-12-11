@@ -5,34 +5,34 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class Day11Test {
-    var classUnderTest = Day11()
+    lateinit var classUnderTest : Day11
 
     @BeforeEach
     fun setup() {
-
+        classUnderTest = Day11()
     }
 
     @Test
     fun testPart01() {
         classUnderTest.init(false)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("1625", classUnderTest.run1())
     }
 
     @Test
     fun testPart01_dummyData() {
         classUnderTest.init(true)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("1656", classUnderTest.run1())
     }
 
     @Test
     fun testPart02() {
         classUnderTest.init(false)
-        assertEquals("", classUnderTest.run2())
+        assertEquals("244", classUnderTest.run2())
     }
 
     @Test
     fun testPart02_dummyData() {
         classUnderTest.init(true)
-        assertEquals("", classUnderTest.run2())
+        assertEquals("195", classUnderTest.run2())
     }
 }

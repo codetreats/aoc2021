@@ -3,7 +3,7 @@ package net.codetreats.aoc2021.day09
 import net.codetreats.aoc2021.common.Board
 import net.codetreats.aoc2021.common.IntPoint
 
-class Field(private val width: Int, private val height: Int) : Board<Int>(width, height, 0) {
+class Field(width: Int, height: Int) : Board<Int>(width, height, 0) {
     fun getLowPoints() : List<IntPoint> {
         val lowPoints = mutableListOf<IntPoint>()
         for (x in 0 until width) {

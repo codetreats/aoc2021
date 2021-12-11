@@ -1,6 +1,6 @@
 package net.codetreats.aoc2021.common
 
-open class Board<T>(private val width: Int, private val height: Int, private val initialValue: T) {
+open class Board<T>(protected val width: Int, protected val height: Int, private val initialValue: T) {
     protected val content = mutableListOf<T>()
 
     init {
@@ -48,12 +48,14 @@ open class Board<T>(private val width: Int, private val height: Int, private val
         var s = StringBuilder()
         var length = 0
         content.forEach {
-            length++
             if (length % width == 0) {
                 s.appendln()
             }
-            s.append(it)
+            length++
+            s.append(valueToString(it))
         }
         return s.toString()
     }
+
+    open fun valueToString(value: T) : String = value.toString()
 }
