@@ -70,6 +70,11 @@ fun main() {
 
 
     logger.info("Running AOC for day $dayOfMonth")
+
+    logger.info("heapSize = ${Runtime.getRuntime().totalMemory()}")
+    logger.info("heapMaxSize = ${Runtime.getRuntime().maxMemory()}")
+    logger.info("heapFreeSize = ${Runtime.getRuntime().freeMemory()}")
+
     val day = days.get(dayOfMonth)
     if (day == null) {
         logger.error("No code found")

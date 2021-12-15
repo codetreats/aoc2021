@@ -44,7 +44,7 @@ class Day14 : Day<Map<String, List<String>>>(14) {
         var chunks = mutableMapOf<String, Long>()
         for (i in 1 until template.length) {
             val key = "${template[i - 1]}${template[i]}"
-            chunks[key] = 1 + (chunks[key] ?: 0)
+            chunks.increase(key)
         }
         logger.info("Input ($template) as Chunks: $chunks")
         return chunks
