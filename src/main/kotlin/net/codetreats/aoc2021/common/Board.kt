@@ -21,10 +21,12 @@ open class Board<T>(val width: Int, val height: Int, private val initialValue: T
 
     fun getOrNull(x: Int, y: Int) : DataPoint<T>? {
         if (x in 0 until width && y in 0 until height) {
-            return DataPoint<T>(x, y, content[y * width + x])
+            return DataPoint<T>(x, y, content[position(x,y)])
         }
         return null
     }
+
+    fun position(x: Int, y: Int) = y * width + x
 
     fun neighbors(x: Int, y: Int, withDiag: Boolean = false, withSelf: Boolean = false) : List<DataPoint<T>> {
         val neighbors = mutableListOf<DataPoint<T>?>()

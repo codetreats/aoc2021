@@ -7,7 +7,7 @@ import net.codetreats.aoc2021.util.Logger
 open class Day15 : Day<Cavern>(15) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = true
+    override fun useDummy(): Boolean = false
 
     override fun default(): Cavern = Cavern(0,0)
 
@@ -19,14 +19,10 @@ open class Day15 : Day<Cavern>(15) {
         }
     }
 
-    override fun run1() = if (useDummy()) {
-        input.shortestPath().toString()
-    } else {
-        // with the real input the result is 1 to high. Don't have a clue, why.
-        (input.shortestPath() - 1).toString()
-    }
+    override fun run1() = input.shortestPath().toString()
 
     override fun run2(): String {
+
         val expanded = Cavern(input.width * 5, input.height * 5)
         for (x in 0 until input.width) {
             for (y in 0 until input.height) {

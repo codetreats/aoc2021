@@ -12,72 +12,79 @@ class Cavern(width: Int, height: Int) : Board<Byte>(width, height, 0) {
 
 
     fun shortestPath() : Int {
+        logger.info("Prepare dijkstra")
+
         val nodes = width * height
-        val edges: Array<MutableMap<Int,Byte>> = Array(nodes) { mutableMapOf<Int,Byte>() }
+        val edges: MutableMap<Int, Set<Int>> = mutableMapOf()
+        val weights: MutableMap<Pair<Int, Int>, Int> = mutableMapOf()
         for ( x in 0 until width) {
             for ( y in 0 until height) {
+                val set = mutableSetOf<Int>()
                 neighbors(x, y).forEach {
-                    edges[position(x,y)][position(it.x, it.y)] = it.value
+                    set.add(position(it.x,it.y))
+                    weights[Pair(position(x,y), position(it.x, it.y))] = it.value.toInt()
                 }
+                edges[position(x,y)] = set
             }
         }
-        val shortestPathes = dijkstra(0, edges, nodes)
+
+
+        val graph = Graph<Int>(
+            (0 until width * height).toSet(),
+            edges,
+            weights
+        )
+
+        logger.info("Run dijkstra")
+        val shortestPathes = dijkstra(graph,0)
         //printShortest(shortestPathes)
-        return shortestPathes[width * height - 1]
+        logger.info("Calculate shortest")
+        val path = shortestPath(shortestPathes, 0, width * height -1)
+        logger.info("Shortest path: $path")
+        return path.map { content[it]}.sum() - content[0]
     }
 
-    private fun position(x: Int, y: Int) = y * width + x
+    fun <T> dijkstra(graph: Graph<T>, start: T): Map<T, T?> {
+        val S: MutableSet<T> = mutableSetOf() // a subset of vertices, for which we know the true distance
 
-    private fun printShortest(shortestPathes: IntArray) {
-        val print = object : Board<Int>(width, height, 0) {
-            override fun valueToString(value: Int): String {
-                return value.toString().padStart(4, ' ')
-            }
-        }
-        for (x in 0 until width) {
-            for (y in 0 until height) {
-                print.set(x,y, shortestPathes[position(x,y)])
-            }
-        }
-        logger.debug("$print")
-    }
+        val delta = graph.vertices.map { it to Int.MAX_VALUE }.toMap().toMutableMap()
+        delta[start] = 0
 
-    private fun dijkstra(startIndex: Int, edges: Array<MutableMap<Int,Byte>>, nodeCount: Int) : IntArray {
-        // Initialize single source
-        val distances = IntArray(nodeCount) { Integer.MAX_VALUE }
-        val predecessors = IntArray(nodeCount) { -1 }
-        distances[startIndex] = 0
+        val previous: MutableMap<T, T?> = graph.vertices.map { it to null }.toMap().toMutableMap()
 
-        val S: MutableList<Int> = ArrayList()
-        val Q: MutableList<Int> = (0 until nodeCount).toMutableList()
+        while (S != graph.vertices) {
+            val v: T = delta
+                .filter { !S.contains(it.key) }
+                .minBy { it.value }!!
+                .key
 
-        // Iterations
-        while (Q.isNotEmpty()) {
-            val u: Int = extractMin(Q, distances)
-            S.add(u)
+            graph.edges.getValue(v).minus(S).forEach { neighbor ->
+                val newPath = delta.getValue(v) + graph.weights.getValue(Pair(v, neighbor))
 
-            edges[u].entries.forEach {  node ->
-                if (distances[node.key] > distances[u] + node.value) {
-                    distances[node.key] = distances[u] + node.value
-                    predecessors[node.key] = u
+                if (newPath < delta.getValue(neighbor)) {
+                    delta[neighbor] = newPath
+                    previous[neighbor] = v*
                 }
             }
+
+            S.add(v)
         }
-        return distances
+
+        return previous.toMap()
     }
 
-    private fun extractMin(Q: MutableList<Int>, d: IntArray): Int {
-        var minNode = Q[0]
-        var minDistance: Int = d[0]
-
-        Q.forEach {
-            if (d[it] < minDistance) {
-                minNode = it
-                minDistance = d[it]
-            }
+    fun <T> shortestPath(shortestPathTree: Map<T, T?>, start: T, end: T): List<T> {
+        fun pathTo(start: T, end: T): List<T> {
+            if (shortestPathTree[end] == null) return listOf(end)
+            return listOf(pathTo(start, shortestPathTree[end]!!), listOf(end)).flatten()
         }
 
-        Q.remove(minNode)
-        return minNode
+        return pathTo(start, end)
     }
 }
+
+data class Graph<T>(
+    val vertices: Set<T>,
+    val edges: Map<T, Set<T>>,
+    val weights: Map<Pair<T, T>, Int>
+)
