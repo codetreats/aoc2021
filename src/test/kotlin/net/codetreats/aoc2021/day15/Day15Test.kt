@@ -27,7 +27,7 @@ class Day15Test {
         assertEquals("40", classUnderTest.run1())
     }
 
-    @Disabled // Takes too long
+    @Test
     fun testPart02() {
         classUnderTest.init(false)
         assertEquals("3022", classUnderTest.run2())

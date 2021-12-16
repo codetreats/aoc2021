@@ -14,8 +14,8 @@ class Dijkstra {
     fun minimalDistance(nodeCount: Int, startNode: Int, endNode: Int, edges: Map<Int, Set<EdgeDistance>>) : Int {
         val distances  = IntArray(nodeCount) { Integer.MAX_VALUE}
         distances[startNode] = 0
-        val queue : MutableList<Int> = (0 until nodeCount).toCollection(ArrayList())
-
+        val queue : MutableList<Int> = mutableListOf(0)
+        val added = mutableSetOf<Int>(0)
         while(queue.isNotEmpty()) {
             val u : Int = queue.minBy { distances[it] }!!
             queue.remove(u)
@@ -23,6 +23,10 @@ class Dijkstra {
                 return distances[nodeCount - 1]
             }
             edges[u]!!.forEach { v ->
+                if (v.node !in queue && v.node !in added) {
+                    queue.add(v.node)
+                    added.add(v.node)
+                }
                 if (v.node in queue) {
                     val newDistance = distances[u] + v.weight
                     if (newDistance < distances[v.node]) {
