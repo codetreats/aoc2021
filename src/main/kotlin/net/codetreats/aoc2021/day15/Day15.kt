@@ -22,7 +22,6 @@ open class Day15 : Day<Cavern>(15) {
     override fun run1() = input.shortestPath().toString()
 
     override fun run2(): String {
-
         val expanded = Cavern(input.width * 5, input.height * 5)
         for (x in 0 until input.width) {
             for (y in 0 until input.height) {
@@ -35,12 +34,7 @@ open class Day15 : Day<Cavern>(15) {
             }
         }
         //logger.info(expanded)
-        if (useDummy()) {
-            return expanded.shortestPath().toString()
-        } else {
-            // with the real input the result is 2 to high. Don't have a clue, why.
-            return (expanded.shortestPath() - 2).toString()
-        }
+        return expanded.shortestPath().toString()
     }
 
     private fun increase(v: Byte, by : Int) : Int = if (v + by <= 9) v + by else v + by - 9

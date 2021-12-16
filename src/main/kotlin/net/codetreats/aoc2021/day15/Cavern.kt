@@ -63,7 +63,7 @@ class Cavern(width: Int, height: Int) : Board<Byte>(width, height, 0) {
 
                 if (newPath < delta.getValue(neighbor)) {
                     delta[neighbor] = newPath
-                    previous[neighbor] = v*
+                    previous[neighbor] = v
                 }
             }
 

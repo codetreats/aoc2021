@@ -4,10 +4,11 @@ import net.codetreats.aoc2021.util.Level
 import net.codetreats.aoc2021.util.Logger
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class Day15Test {
-
+    val classUnderTest = Day15()
 
     @BeforeEach
     fun setup() {
@@ -16,37 +17,25 @@ class Day15Test {
 
     @Test
     fun testPart01() {
-        val classUnderTest = object : Day15() {
-            override fun useDummy() = false
-        }
-        classUnderTest.init()
+        classUnderTest.init(false)
         assertEquals("698", classUnderTest.run1())
     }
 
     @Test
     fun testPart01_dummyData() {
-        val classUnderTest = object : Day15() {
-            override fun useDummy() = true
-        }
-        classUnderTest.init()
+        classUnderTest.init(true)
         assertEquals("40", classUnderTest.run1())
     }
 
-    @Ignore
+    @Disabled // Takes too long
     fun testPart02() {
-        val classUnderTest = object : Day15() {
-            override fun useDummy() = false
-        }
-        classUnderTest.init()
+        classUnderTest.init(false)
         assertEquals("3022", classUnderTest.run2())
     }
 
     @Test
     fun testPart02_dummyData() {
-        val classUnderTest = object : Day15() {
-            override fun useDummy() = true
-        }
-        classUnderTest.init()
+        classUnderTest.init(true)
         assertEquals("315", classUnderTest.run2())
     }
 }
