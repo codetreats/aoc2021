@@ -1,14 +1,17 @@
 package net.codetreats.aoc2021.day04
 
+import net.codetreats.aoc2021.util.Level
+import net.codetreats.aoc2021.util.Logger
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class BoardTest {
-    lateinit var classUnderTest: Board
+    private lateinit var classUnderTest: Board
 
     @BeforeEach
     fun setup() {
+        Logger.level = Level.ERROR
         classUnderTest = Board(5)
         for (i in 1..25) {
             classUnderTest.addField(i)

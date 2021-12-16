@@ -7,7 +7,7 @@ class Day01 : Day<List<Int> >(1) {
 
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = false
+    override val useDummy = false
 
     override fun convert(input: List<String>): List<Int> {
         return input.map {
@@ -38,9 +38,5 @@ class Day01 : Day<List<Int> >(1) {
             last = it
         }
         return total.toString()
-    }
-
-    override fun default(): List<Int> {
-        return listOf()
     }
 }

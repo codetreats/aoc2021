@@ -14,9 +14,7 @@ class Day12 : Day<List<Edge>>(12) {
         Logger.level = Level.INFO
     }
 
-    override fun useDummy(): Boolean = false
-
-    override fun default(): List<Edge> = listOf()
+    override val useDummy = false
 
     override fun convert(input: List<String>): List<Edge> = input.map {
         val start = Node(it.split("-")[0])

@@ -39,7 +39,6 @@ fun main() {
     val paddedDay = dayOfMonth.pad()
     val logger = Logger("Day$paddedDay", "MAIN")
 
-
     val days = mutableMapOf<Int, Day<*>>()
     days[1] = Day01()
     days[2] = Day02()
@@ -68,20 +67,9 @@ fun main() {
     days[24] = Day24()
     days[25] = Day25()
 
+    logger.system("Running AOC for day $dayOfMonth")
 
-    logger.info("Running AOC for day $dayOfMonth")
-
-    logger.info("heapSize = ${Runtime.getRuntime().totalMemory()}")
-    logger.info("heapMaxSize = ${Runtime.getRuntime().maxMemory()}")
-    logger.info("heapFreeSize = ${Runtime.getRuntime().freeMemory()}")
-
-    val day = days.get(dayOfMonth)
-    if (day == null) {
-        logger.error("No code found")
-        return
-    }
-
-    day.run()
+    days[dayOfMonth]!!.run()
 }
 
 

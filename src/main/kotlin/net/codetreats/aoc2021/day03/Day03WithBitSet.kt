@@ -8,7 +8,7 @@ import kotlin.math.pow
 class Day03WithBitSet : Day<List<BitSet>>(3) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = false
+    override val useDummy = false
 
     private var lineLength = 0
 
@@ -51,10 +51,6 @@ class Day03WithBitSet : Day<List<BitSet>>(3) {
 
     override fun run2(): String {
         return 0L.toString()
-    }
-
-    override fun default(): List<BitSet> {
-        return listOf()
     }
 
     internal fun BitSet.longValue() : Long {

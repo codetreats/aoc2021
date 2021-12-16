@@ -3,13 +3,13 @@ package net.codetreats.aoc2021
 import net.codetreats.aoc2021.util.Logger
 import java.io.File
 
-abstract class Day<T>(val dayOfMonth: Int) {
+abstract class Day<T : Any>(val dayOfMonth: Int) {
     protected abstract val logger: Logger
 
-    protected var input : T = default()
+    protected lateinit var input : T
 
     fun init() {
-        init(useDummy())
+        init(useDummy)
     }
 
     fun init(dummy:Boolean) {
@@ -25,12 +25,12 @@ abstract class Day<T>(val dayOfMonth: Int) {
         val file = File(dir, file)
         logger.debug("Read " + file.absolutePath)
         if (!file.exists()) {
-            return listOf()
+            return throw IllegalArgumentException("Input ${file.absolutePath} not exists")
         }
         return file.readLines()
     }
 
-    fun initInput(input: List<String>) {
+    private fun initInput(input: List<String>) {
         this.input = convert(input)
     }
 
@@ -38,38 +38,32 @@ abstract class Day<T>(val dayOfMonth: Int) {
     fun run() {
         init()
         runPart(1) { run1() }
-        if (reset()) {
+        if (reset) {
             init()
         }
         runPart(2) { run2() }
     }
 
     fun runPart(nr: Int, action: ()->String) {
-        logger.info("#".repeat(20))
-        logger.info("Starting part " + nr)
-        logger.info("#".repeat(20))
-        logger.info()
+        logger.system("#".repeat(20))
+        logger.system("Starting part " + nr)
+        logger.system("#".repeat(20))
+        logger.system()
         var start = System.currentTimeMillis()
-        logger.info("Result: " + action.invoke())
+        logger.system("Result: " + action.invoke())
         var end = System.currentTimeMillis()
-        logger.info()
-        logger.info("Part " + nr + " took " + (end - start) + " millis")
+        logger.system()
+        logger.system("Part " + nr + " took " + (end - start) + " millis")
     }
 
     abstract fun convert(input: List<String>): T
-
-    abstract fun default(): T
 
     abstract fun run1(): String
 
     abstract fun run2(): String
 
-    open fun useDummy(): Boolean {
-        return false
-    }
+    open val useDummy = false
 
-    open fun reset(): Boolean {
-        return false
-    }
+    open val reset = true
 
 }

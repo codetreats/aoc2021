@@ -9,9 +9,7 @@ class Day14 : Day<Map<String, List<String>>>(14) {
 
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = true
-
-    override fun default(): Map<String, List<String>> = mapOf()
+    override val useDummy = true
 
     override fun convert(input: List<String>): Map<String, List<String>> {
         template = input[0]

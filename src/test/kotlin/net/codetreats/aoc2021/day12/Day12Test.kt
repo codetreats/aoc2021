@@ -7,11 +7,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class Day12Test {
-    var classUnderTest = Day12()
+    private lateinit var classUnderTest : Day12
 
     @BeforeEach
     fun setup() {
         Logger.level = Level.ERROR
+        classUnderTest = Day12()
     }
 
     @Test

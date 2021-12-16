@@ -6,7 +6,7 @@ import net.codetreats.aoc2021.util.Logger
 class Day02 : Day<List<Move>>(2) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = true
+    override val useDummy = true
 
     override fun convert(input: List<String>): List<Move> = input.map { Move.from(it) }
 
@@ -30,9 +30,5 @@ class Day02 : Day<List<Move>>(2) {
             down += it.forward * aim
         }
         return (forward * down).toString()
-    }
-
-    override fun default(): List<Move> {
-        return listOf()
     }
 }

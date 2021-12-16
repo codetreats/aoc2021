@@ -17,6 +17,10 @@ class Logger(private val tag: String, private val prefix: String) {
         log(Level.ERROR, message)
     }
 
+    fun system(message: Any = "") {
+        log(Level.SYSTEM, message)
+    }
+
     fun log(level: Level, message: Any) {
         if (level >= Logger.level) {
             println("[$tag]($prefix) $message")
@@ -32,5 +36,5 @@ class Logger(private val tag: String, private val prefix: String) {
 }
 
 enum class Level(val level: Int) : Comparable<Level> {
-    DEBUG(0), INFO(1), WARN(2), ERROR(3)
+    DEBUG(0), INFO(1), WARN(2), ERROR(3), SYSTEM(4)
 }

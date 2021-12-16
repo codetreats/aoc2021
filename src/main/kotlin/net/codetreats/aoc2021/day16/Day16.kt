@@ -13,9 +13,7 @@ class Day16 : Day<String>(16) {
         'C' to "1100", 'D' to "1101", 'E' to "1110", 'F' to "1111"
     )
 
-    override fun useDummy(): Boolean = false
-
-    override fun default(): String = ""
+    override val useDummy = false
 
     override fun convert(input: List<String>): String {
         val result = StringBuilder()

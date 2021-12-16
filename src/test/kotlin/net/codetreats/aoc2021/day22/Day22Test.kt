@@ -5,11 +5,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class Day22Test {
-    var classUnderTest = Day22()
+    private lateinit var classUnderTest : Day22
 
     @BeforeEach
     fun setup() {
-
+        classUnderTest = Day22()
     }
 
     @Test

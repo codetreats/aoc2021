@@ -7,9 +7,7 @@ import kotlin.math.abs
 class Day07 : Day<List<Int>>(7) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = false
-
-    override fun default(): List<Int> = listOf()
+    override val useDummy = false
 
     override fun convert(input: List<String>): List<Int> = input[0].split(",").map { it.toInt() }
 

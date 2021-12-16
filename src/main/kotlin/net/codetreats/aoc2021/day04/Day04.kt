@@ -10,9 +10,7 @@ class Day04 : Day<List<Board>>(4) {
 
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = false
-
-    override fun default(): List<Board> = listOf()
+    override val useDummy = false
 
     override fun convert(input: List<String>): List<Board> {
         inputs.addAll(input[0].split(",").map { it.toInt() })

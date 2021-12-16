@@ -7,9 +7,7 @@ import net.codetreats.aoc2021.util.Logger
 open class Day15 : Day<Cavern>(15) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override fun useDummy(): Boolean = false
-
-    override fun default(): Cavern = Cavern(0,0)
+    override val useDummy = false
 
     override fun convert(input: List<String>) = Cavern(input[0].length, input.size).also {
         for (x in input[0].indices) {

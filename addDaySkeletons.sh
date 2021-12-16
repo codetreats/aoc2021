@@ -10,7 +10,7 @@ for DAY in {01..25}; do
   SRCDIR="$SRCFOLDER/day$DAY"
   TESTDIR="$TESTFOLDER/day$DAY"
   RESDIR="$RESFOLDER/day$DAY"
-  echo "mkdir $SRCDIR $TESTDIR"
+
   mkdir -p $SRCDIR $TESTDIR $RESDIR
   if ! [ -f "$SRCDIR/Day$DAY.kt" ] ; then
     cat $DAYTEMPLATE | sed -e "s/XX/$DAY/g" | sed -e "s/(0/(/g" > "$SRCDIR/Day$DAY.kt"

@@ -1,15 +1,18 @@
 package net.codetreats.aoc2021.day07
 
+import net.codetreats.aoc2021.util.Level
+import net.codetreats.aoc2021.util.Logger
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class Day07Test {
-    var classUnderTest = Day07()
+    private lateinit var classUnderTest : Day07
 
     @BeforeEach
     fun setup() {
-
+        Logger.level = Level.ERROR
+        classUnderTest = Day07()
     }
 
     @Test
