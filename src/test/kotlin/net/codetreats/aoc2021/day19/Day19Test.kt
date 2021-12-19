@@ -2,6 +2,7 @@ package net.codetreats.aoc2021.day19
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class Day19Test {
@@ -12,27 +13,29 @@ class Day19Test {
         classUnderTest = Day19()
     }
 
-    @Test
+    @Disabled
     fun testPart01() {
         classUnderTest.init(false)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("451", classUnderTest.run1())
     }
 
     @Test
     fun testPart01_dummyData() {
         classUnderTest.init(true)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("79", classUnderTest.run1())
     }
 
-    @Test
+    @Disabled
     fun testPart02() {
         classUnderTest.init(false)
-        assertEquals("", classUnderTest.run2())
+        classUnderTest.run1()
+        assertEquals("13184", classUnderTest.run2())
     }
 
     @Test
     fun testPart02_dummyData() {
         classUnderTest.init(true)
-        assertEquals("", classUnderTest.run2())
+        classUnderTest.run1()
+        assertEquals("3621", classUnderTest.run2())
     }
 }
