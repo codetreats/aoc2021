@@ -1,5 +1,7 @@
 package net.codetreats.aoc2021.day19
 
+import net.codetreats.aoc2021.util.Level
+import net.codetreats.aoc2021.util.Logger
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -10,6 +12,7 @@ class Day19Test {
 
     @BeforeEach
     fun setup() {
+        Logger.level = Level.ERROR
         classUnderTest = Day19()
     }
 
