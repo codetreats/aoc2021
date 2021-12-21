@@ -1,13 +1,10 @@
 package net.codetreats.aoc2021.day21
 
-class Die {
+class DeterministicDie {
     private var value = 0
 
-    private var dieCount = 0
-
-    fun currentValue() = value
-
-    fun dieCount() = dieCount
+    var dieCount = 0
+        private set
 
     private fun next() : Int {
         dieCount++
