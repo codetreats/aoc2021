@@ -1,52 +1,52 @@
 package net.codetreats.aoc2021.day22
 
 import net.codetreats.aoc2021.Day
+import net.codetreats.aoc2021.common.Point
 import net.codetreats.aoc2021.common.Point3
 import net.codetreats.aoc2021.util.Logger
+import java.util.*
+import java.util.function.Consumer
+import kotlin.collections.ArrayList
 
-class Day22 : Day<List<Instruction>>(22) {
+
+class Day22 : Day<List<Cube>>(22) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
     override val useDummy = false
 
-    override fun convert(input: List<String>): List<Instruction> = input.map {
+    override fun convert(input: List<String>): List<Cube> = input.map {
         val pattern = "(on|off) x=(-?[0-9]*)..(-?[0-9]*),y=(-?[0-9]*)..(-?[0-9]*),z=(-?[0-9]*)..(-?[0-9]*)".toRegex()
-
         with(pattern.find(it)!!) {
-            Instruction(
-                groupValues[2].toInt() ..  groupValues[3].toInt(),
-                groupValues[4].toInt() ..  groupValues[5].toInt(),
-                groupValues[6].toInt() ..  groupValues[7].toInt(),
+            Cube(
+                groupValues[2].toInt(), groupValues[3].toInt(),
+                groupValues[4].toInt(), groupValues[5].toInt(),
+                groupValues[6].toInt(), groupValues[7].toInt(),
                 groupValues[1] == "on"
             )
         }
     }
 
-
     override fun run1(): String {
-        val onCubes = mutableSetOf<Point3>()
-        input.forEach {
-            for (x in it.xRange) {
-                if (x < -50 || x > 50) continue
-                for (y in it.yRange) {
-                    if (y < -50 || y > 50) continue
-                    for (z in it.zRange) {
-                        if (z < -50 || z > 50) continue
-                        if (it.on) {
-                            onCubes.add(Point3.from(x, y, z))
-                        } else {
-                            onCubes.remove(Point3.from(x, y, z))
-                        }
-                    }
-                }
-            }
-        }
-        return onCubes.size.toString()
+        val reducedCubes = input.map {
+                Cube(it.x1.slice(), it.x2.slice(), it.y1.slice(), it.y2.slice(), it.z1.slice(), it.z2.slice(), it.on)
+        }.filter { it.x1 != it.x2 && it.y1 != it.y2 && it.z1 != it.z2 }
+        return run(reducedCubes)
     }
 
-    override fun run2(): String {
-        return ""
+    override fun run2(): String = run(input)
+
+    private fun run(cubes: List<Cube>) : String {
+        val placed: MutableList<Cube> = ArrayList()
+        for (cube in cubes) {
+            val todo: MutableList<Cube> = ArrayList()
+            if (cube.on) {
+                todo.add(cube)
+            }
+            for (p in placed) {
+                p.intersect(cube, !p.on).ifPresent { todo.add(it) }
+            }
+            placed.addAll(todo)
+        }
+        return placed.map { it.volume() }.sum().toString()
     }
 }
-
-data class Instruction(val xRange: IntRange, val yRange: IntRange, val zRange: IntRange, val on: Boolean)
