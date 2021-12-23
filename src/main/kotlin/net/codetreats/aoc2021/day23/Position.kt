@@ -56,10 +56,10 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
             // Find possible hallway positions
             val result = mutableMapOf<Position, Int>()
             hallwayPositions.forEach { hw ->
-                getSteps(amp, hw)?.let { costs ->
+                getSteps(amp, hw)?.let { steps ->
                     val to = move(amp, hw.toDataPoint(amp.value))
                     logger.debug("Found way for $amp to hallway $hw")
-                    result.put(to, costs)
+                    result.put(to, steps * costs[amp.value]!!)
                 }
             }
             return result

@@ -20,7 +20,7 @@ class Dijkstra {
             val u : Int = queue.minBy { distances[it] }!!
             queue.remove(u)
             if (u == endNode) {
-                return distances[nodeCount - 1]
+                return distances[endNode]
             }
             edges[u]!!.forEach { v ->
                 if (v.node !in queue && v.node !in added) {
