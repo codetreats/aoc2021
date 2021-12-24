@@ -23,35 +23,39 @@ class Burrow(val start: Position) {
         DataPoint(9, 3, 'D')
     ))
     fun shortestPath(): Int {
-        val visitedPositions = mutableListOf<Position>()
+        val visitedPositions = mutableMapOf<Position, Int>()
         val positionsToCheck = mutableListOf<Position>()
         val edges = mutableMapOf<Int, Set<EdgeDistance>>()
-        visitedPositions.add(start)
+
+        visitedPositions[start] = 0
         positionsToCheck.add(start)
+        logger.info("Find $start in ${visitedPositions.keys}")
 
         while (positionsToCheck.isNotEmpty()) {
             val position = positionsToCheck.removeAt(0)
-            val positionIndex = visitedPositions.indexOf(position)
+            val positionIndex = visitedPositions[position]!!
             val edgesToAdd: MutableSet<EdgeDistance> = HashSet(edges.getOrDefault(positionIndex, emptySet()))
             val possiblePositions = getEdges(position)
             possiblePositions.forEach {
                 logger.info("Found way to")
                 logger.info("${it.key.print()}")
-                if (!visitedPositions.contains(it.key)) {
-                    visitedPositions.add(it.key)
+                if (!visitedPositions.containsKey(it.key)) {
+                    visitedPositions[it.key] = visitedPositions.size
                     positionsToCheck.add(it.key)
                 }
-                edgesToAdd.add(EdgeDistance(visitedPositions.indexOf(it.key), it.value))
+                edgesToAdd.add(EdgeDistance(visitedPositions[it.key]!!, it.value))
             }
             edges[positionIndex] = edgesToAdd
         }
-        val end = visitedPositions.indexOf(endPosition)
-        logger.info("Visited: ${visitedPositions.size}")
+        visitedPositions.forEach {
+            logger.info("Visited: ${it.value} : ${it.key}")
+        }
+
+        val end = visitedPositions[endPosition]!!
         logger.info("End-Index: $end")
         if (end < 0) {
             throw IllegalStateException("End position not reached!")
         }
-        logger.info("End: ${visitedPositions[end]}")
         return Dijkstra().minimalDistance(visitedPositions.size, 0, end, edges)
     }
 
