@@ -10,10 +10,6 @@ import kotlin.math.log
 class Day12 : Day<List<Edge>>(12) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    init {
-        Logger.level = Level.INFO
-    }
-
     override val useDummy = false
 
     override fun convert(input: List<String>): List<Edge> = input.map {

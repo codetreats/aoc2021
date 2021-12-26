@@ -24,7 +24,6 @@ class Day23 : Day<Position>(23) {
     }
 
     override fun run1(): String {
-        Logger.level = Level.INFO
         input.forEach {
             logger.info(it)
         }

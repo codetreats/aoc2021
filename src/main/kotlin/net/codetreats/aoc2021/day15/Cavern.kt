@@ -21,7 +21,6 @@ class Cavern(width: Int, height: Int) : Board<Byte>(width, height, 0) {
             }
         }
         logger.info("Run dijkstra")
-        return 0
-        //return Dijkstra().minimalDistance(width * height, 0, width * height - 1, edges)
+        return Dijkstra().shortestPath(width * height, 0, width * height - 1, edges).length
     }
 }

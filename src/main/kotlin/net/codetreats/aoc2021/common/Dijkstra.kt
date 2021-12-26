@@ -11,19 +11,23 @@ class Dijkstra {
      *         A target node is of type [EdgeDistance],
      *         which contains the name of the target node and the distance between the key and the target
      */
-    fun minimalDistance(nodeCount: Int, startNode: Int, endNode: Int, edges: Map<Int, Set<EdgeDistance>>) : IntArray {
+    fun shortestPath(nodeCount: Int, startNode: Int, endNode: Int, edges: Map<Int, Set<EdgeDistance>>) : DijkstraResult {
         val distances  = IntArray(nodeCount) { Integer.MAX_VALUE}
         val preds = IntArray(nodeCount) { -1 }
         distances[startNode] = 0
-        val queue : MutableList<Int> = (0 until nodeCount).toCollection(ArrayList())
-
+        val queue : MutableList<Int> = mutableListOf(0)
+        val added = mutableSetOf<Int>(0)
         while(queue.isNotEmpty()) {
             val u : Int = queue.minBy { distances[it] }!!
             queue.remove(u)
             if (u == endNode) {
-                return preds
+                return DijkstraResult(preds, distances[u])
             }
             edges[u]!!.forEach { v ->
+                if (v.node !in queue && v.node !in added) {
+                    queue.add(v.node)
+                    added.add(v.node)
+                }
                 if (v.node in queue) {
                     val newDistance = distances[u] + v.weight
                     if (newDistance < distances[v.node]) {
@@ -35,18 +39,8 @@ class Dijkstra {
         }
         throw IllegalStateException("Algorithm finished without result")
     }
-
-    private fun queueMinimum(queue: MutableList<Int>, distances: IntArray): Int {
-        var minNode = queue[0]
-        var minDistance = Integer.MAX_VALUE
-        queue.forEach {
-            if (distances[it] < minDistance) {
-                minNode = it
-                minDistance = distances[it]
-            }
-        }
-        return minNode
-    }
 }
 
 data class EdgeDistance(val node: Int, val weight: Int)
+
+data class DijkstraResult(val preds: IntArray, val length: Int)
