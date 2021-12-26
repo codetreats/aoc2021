@@ -1,6 +1,6 @@
 package net.codetreats.aoc2021.common
 
-open class Board<T>(val width: Int, val height: Int, private val initialValue: T) {
+open class Board<T>(val width: Int, val height: Int, private val initialValue: T)  {
     protected val content = mutableListOf<T>()
 
     init {

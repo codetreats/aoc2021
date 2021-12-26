@@ -18,13 +18,13 @@ class Day25Test {
     @Test
     fun testPart01() {
         classUnderTest.init(false)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("337", classUnderTest.run1())
     }
 
     @Test
     fun testPart01_dummyData() {
         classUnderTest.init(true)
-        assertEquals("", classUnderTest.run1())
+        assertEquals("58", classUnderTest.run1())
     }
 
     @Test
