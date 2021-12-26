@@ -12,8 +12,8 @@ class Day23 : Day<Position>(23) {
 
     override fun convert(input: List<String>): Position {
         val set = mutableSetOf<DataPoint<Char>>()
-        for (y in 0 until input.size) {
-            for (x in 0 until input[y].length) {
+        for (y in input.indices) {
+            for (x in input[y].indices) {
                 val c = input[y][x]
                 if (c == 'A' || c == 'B' || c == 'C' || c == 'D') {
                     set.add(DataPoint(x, y, c))
@@ -23,10 +23,8 @@ class Day23 : Day<Position>(23) {
         return Position(set)
     }
 
-
     override fun run1(): String {
-        Logger.level = Level.ERROR
-
+        Logger.level = Level.INFO
         input.forEach {
             logger.info(it)
         }

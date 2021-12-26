@@ -21,7 +21,11 @@ class Dijkstra {
             val u : Int = queue.minBy { distances[it] }!!
             queue.remove(u)
             if (u == endNode) {
+<<<<<<< Updated upstream
+                return distances[endNode]
+=======
                 return preds
+>>>>>>> Stashed changes
             }
             edges[u]!!.forEach { v ->
                 if (v.node in queue) {

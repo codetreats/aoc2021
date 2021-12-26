@@ -23,40 +23,53 @@ class Burrow(val start: Position) {
         DataPoint(9, 3, 'D')
     ))
     fun shortestPath(): Int {
-        val visitedPositions = mutableMapOf<Position, Int>()
+        val visitedPositions = mutableListOf<Position>()
         val positionsToCheck = mutableListOf<Position>()
         val edges = mutableMapOf<Int, Set<EdgeDistance>>()
-
-        visitedPositions[start] = 0
+        visitedPositions.add(start)
         positionsToCheck.add(start)
-        logger.info("Find $start in ${visitedPositions.keys}")
 
         while (positionsToCheck.isNotEmpty()) {
             val position = positionsToCheck.removeAt(0)
-            val positionIndex = visitedPositions[position]!!
+            val positionIndex = visitedPositions.indexOf(position)
             val edgesToAdd: MutableSet<EdgeDistance> = HashSet(edges.getOrDefault(positionIndex, emptySet()))
             val possiblePositions = getEdges(position)
             possiblePositions.forEach {
-                logger.info("Found way to")
-                logger.info("${it.key.print()}")
-                if (!visitedPositions.containsKey(it.key)) {
-                    visitedPositions[it.key] = visitedPositions.size
+                logger.debug("Found way to")
+                if (!visitedPositions.contains(it.key)) {
+                    visitedPositions.add(it.key)
                     positionsToCheck.add(it.key)
                 }
-                edgesToAdd.add(EdgeDistance(visitedPositions[it.key]!!, it.value))
+                edgesToAdd.add(EdgeDistance(visitedPositions.indexOf(it.key), it.value))
             }
             edges[positionIndex] = edgesToAdd
         }
-        visitedPositions.forEach {
-            logger.info("Visited: ${it.value} : ${it.key}")
-        }
-
-        val end = visitedPositions[endPosition]!!
+        val end = visitedPositions.indexOf(endPosition)
+        logger.info("Visited: ${visitedPositions.size}")
         logger.info("End-Index: $end")
         if (end < 0) {
             throw IllegalStateException("End position not reached!")
         }
-        return Dijkstra().minimalDistance(visitedPositions.size, 0, end, edges)
+        val steps = mutableListOf<Int>()
+        val preds = Dijkstra().minimalDistance(visitedPositions.size, 0, end, edges)
+        var p = end
+        while (p != 0) {
+            steps.add(p)
+            p = preds[p]
+        }
+        steps.add(p)
+        steps.reverse()
+        visitedPositions[steps[0]].print()
+        for (i in 1 until steps.size) {
+            edges[steps[i-1]]!!.forEach {
+                if (it.node == steps[i]) {
+                    logger.info("Cost: ${it.weight}")
+                }
+            }
+            visitedPositions[steps[i]].print()
+        }
+
+        return 0 // Dijkstra().minimalDistance(visitedPositions.size, 0, end, edges)
     }
 
     private fun getEdges(from: Position): Map<Position, Int> {

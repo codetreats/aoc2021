@@ -76,7 +76,6 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
         // to hallway
         var steps = 0
         for (i in 1..from.y - 1) {
-            // way to hallway is blocked
             if (!isEmpty(Point.from(from.x, i))) {
                 logger.debug("To hallway blocked @ ${from.x}, $i")
                 return null
@@ -98,7 +97,6 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
             }
         } else {
             for (i in to.x..from.x - 1) {
-                // way to hallway is blocked
                 if (this.amp(Point.from(i, 1)) != null) {
                     logger.debug("Blocked")
                     return null
@@ -109,7 +107,6 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
         // move to y position
         logger.debug("For i in ${from.y + 1} << ${to.y}")
         for (i in 2..to.y) {
-            // way to hallway is blocked
             if (this.amp(Point.from(to.x, i)) != null) {
                 logger.debug("Blocked")
                 return null

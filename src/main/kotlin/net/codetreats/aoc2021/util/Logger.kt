@@ -2,7 +2,7 @@ package net.codetreats.aoc2021.util
 
 class Logger(private val tag: String, private val prefix: String) {
     fun debug(message: Any = "") {
-        log(Level.DEBUG, message)
+        log(Level.DEBUG, "[DEBUG]$message")
     }
 
     fun info(message: Any = "") {
