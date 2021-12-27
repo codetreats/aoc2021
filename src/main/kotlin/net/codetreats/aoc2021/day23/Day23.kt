@@ -8,7 +8,7 @@ import net.codetreats.aoc2021.util.Logger
 class Day23 : Day<Position>(23) {
     override val logger: Logger = Logger.forDay(dayOfMonth)
 
-    override val useDummy = false
+    override val useDummy = true
 
     override fun convert(input: List<String>): Position {
         val set = mutableSetOf<DataPoint<Char>>()
@@ -24,6 +24,7 @@ class Day23 : Day<Position>(23) {
     }
 
     override fun run1(): String {
+        Logger.level = Level.INFO
         input.forEach {
             logger.info(it)
         }

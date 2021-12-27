@@ -116,7 +116,7 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
         return steps
     }
 
-    fun print() {
+    fun print() : Board<Char> {
         val board = Board(13, 5, '#')
         (1..11).forEach { x ->
             board.set(x, 1, '.')
@@ -132,7 +132,7 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
         forEach {
             board.set(it.x, it.y, it.value)
         }
-        logger.info(board)
+        return board
     }
 
     private fun isEmpty(point: Point) = this.firstOrNull { it.x == point.x && it.y == point.y } == null

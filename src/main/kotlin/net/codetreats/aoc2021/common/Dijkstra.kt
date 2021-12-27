@@ -43,4 +43,12 @@ class Dijkstra {
 
 data class EdgeDistance(val node: Int, val weight: Int)
 
-data class DijkstraResult(val preds: IntArray, val length: Int)
+data class DijkstraResult(val preds: IntArray, val length: Int) {
+    fun shortestPath(from: Int, to: Int) : List<Int> {
+        val path = mutableListOf(to)
+        while (path.last() != from) {
+            path.add(preds[path.last()])
+        }
+        return path.reversed()
+    }
+}

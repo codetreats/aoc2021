@@ -29,7 +29,7 @@ class Burrow(val start: Position) {
 
         visitedPositions[start] = 0
         positionsToCheck.add(start)
-        logger.info("Find $start in ${visitedPositions.keys}")
+        logger.info("Start with $start in ${visitedPositions.keys}")
 
         while (positionsToCheck.isNotEmpty()) {
             val position = positionsToCheck.removeAt(0)
@@ -37,8 +37,8 @@ class Burrow(val start: Position) {
             val edgesToAdd: MutableSet<EdgeDistance> = HashSet(edges.getOrDefault(positionIndex, emptySet()))
             val possiblePositions = getEdges(position)
             possiblePositions.forEach {
-                logger.info("Found way to")
-                logger.info("${it.key.print()}")
+                logger.debug("Found way to")
+                logger.debug("${it.key.print()}")
                 if (!visitedPositions.containsKey(it.key)) {
                     visitedPositions[it.key] = visitedPositions.size
                     positionsToCheck.add(it.key)
@@ -47,16 +47,18 @@ class Burrow(val start: Position) {
             }
             edges[positionIndex] = edgesToAdd
         }
-        visitedPositions.forEach {
-            logger.info("Visited: ${it.value} : ${it.key}")
-        }
-
         val end = visitedPositions[endPosition]!!
         logger.info("End-Index: $end")
         if (end < 0) {
             throw IllegalStateException("End position not reached!")
         }
-        return Dijkstra().shortestPath(visitedPositions.size, 0, end, edges).length
+        val shortest = Dijkstra().shortestPath(visitedPositions.size, 0, end, edges)
+        shortest.shortestPath(0, end).forEach {node ->
+            visitedPositions.filter { it.value == node }.forEach {
+                logger.info(it.key.print())
+            }
+        }
+        return shortest.length
     }
 
     private fun getEdges(from: Position): Map<Position, Int> {
