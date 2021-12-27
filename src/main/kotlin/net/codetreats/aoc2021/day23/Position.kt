@@ -13,15 +13,15 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
     private val hallway = (1..11).map { Point.from(it, 1) }
     private val hallwayPositions = hallway.filter { it.x != 3 && it.x != 5 && it.x != 7 && it.x != 9 }
     private val sideRooms = mapOf(
-        'A' to listOf(DataPoint(3, 2, 'A'), DataPoint(3, 3, 'A')),
-        'B' to listOf(DataPoint(5, 2, 'B'), DataPoint(5, 3, 'B')),
-        'C' to listOf(DataPoint(7, 2, 'C'), DataPoint(7, 3, 'C')),
-        'D' to listOf(DataPoint(9, 2, 'D'), DataPoint(9, 3, 'D'))
+        'A' to listOf(DataPoint(3, 2, 'A'), DataPoint(3, 3, 'A'), DataPoint(3, 4, 'A'), DataPoint(3, 5, 'A')),
+        'B' to listOf(DataPoint(5, 2, 'B'), DataPoint(5, 3, 'B'), DataPoint(5, 4, 'B'), DataPoint(5, 5, 'B')),
+        'C' to listOf(DataPoint(7, 2, 'C'), DataPoint(7, 3, 'C'), DataPoint(7, 4, 'C'), DataPoint(7, 5, 'C')),
+        'D' to listOf(DataPoint(9, 2, 'D'), DataPoint(9, 3, 'D'), DataPoint(9, 4, 'D'), DataPoint(9, 5, 'D'))
     )
 
-    fun amp(point: Point): Char? = this.firstOrNull { it.x == point.x && it.y == point.y }?.value
+    private fun amp(point: Point): Char? = this.firstOrNull { it.x == point.x && it.y == point.y }?.value
 
-    fun move(from: DataPoint<Char>, to: DataPoint<Char>): Position {
+    private fun move(from: DataPoint<Char>, to: DataPoint<Char>): Position {
         val moved = Position(this)
         moved.remove(from)
         moved.add(to)
@@ -29,26 +29,52 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
     }
 
     fun getEdges(amp: DataPoint<Char>): Map<Position, Int> {
+        val side0 = sideRooms[amp.value]!![0]
+        val side1 = sideRooms[amp.value]!![1]
+        val side2 = sideRooms[amp.value]!![2]
+        val side3 = sideRooms[amp.value]!![3]
         // Amp in final room
-        if (amp == sideRooms[amp.value]!![1] || amp == sideRooms[amp.value]!![0] && amp(sideRooms[amp.value]!![1]) == amp.value) {
+        if (amp == side3 ||
+            amp == side2 && amp(side3) == amp.value ||
+            amp == side1 && amp(side3) == amp.value && amp(side2) == amp.value ||
+            amp == side0 && amp(side3) == amp.value && amp(side2) == amp.value && amp(side1) == amp.value
+        ) {
             logger.debug("amp has finished $amp")
             return emptyMap()
         }
-        val lower = sideRooms[amp.value]!![1]
-        val upper = sideRooms[amp.value]!![0]
         // Can amp reach lower target?
-        if (isEmpty(lower) && isEmpty(upper)) {
-            getSteps(amp, lower)?.let {
-                logger.debug("Found way for $amp to reach lower $lower")
-                return mapOf(move(amp, lower) to (it * costs[amp.value]!!))
+        if (isEmpty(side0) && isEmpty(side1) && isEmpty(side2) && isEmpty(side3)) {
+            logger.debug("Search way for $amp to reach side3 $side3")
+            getSteps(amp, side3)?.let {
+                logger.debug("Found way for $amp to reach $side3")
+                return mapOf(move(amp, side3) to (it * costs[amp.value]!!))
             }
         }
 
         // Can amp reach upper target and lower is correct?
-        if (isEmpty(upper) && amp(lower) == amp.value) {
-            getSteps(amp, upper)?.let {
-                logger.debug("Found way for $amp to reach upper")
-                return mapOf(move(amp, upper) to (it * costs[amp.value]!!))
+        if (isEmpty(side0) && isEmpty(side1) && isEmpty(side2) && amp(side3) == amp.value) {
+            logger.debug("Search way for $amp to reach side2 $side2")
+            getSteps(amp, side2)?.let {
+                logger.debug("Found way for $amp to reach $side2")
+                return mapOf(move(amp, side2) to (it * costs[amp.value]!!))
+            }
+        }
+
+        // Can amp reach upper target and lower is correct?
+        if (isEmpty(side0) && isEmpty(side1) && amp(side2) == amp.value && amp(side3) == amp.value) {
+            logger.debug("Search way for $amp to reach $side1")
+            getSteps(amp, side1)?.let {
+                logger.debug("Found way for $amp to reach side1 $side1")
+                return mapOf(move(amp, side1) to (it * costs[amp.value]!!))
+            }
+        }
+
+        // Can amp reach upper target and lower is correct?
+        if (isEmpty(side0) && amp(side1) == amp.value && amp(side2) == amp.value && amp(side3) == amp.value) {
+            logger.debug("Search way for $amp to reach side0 $side0")
+            getSteps(amp, side0)?.let {
+                logger.debug("Found way for $amp to reach $side0")
+                return mapOf(move(amp, side0) to (it * costs[amp.value]!!))
             }
         }
 
@@ -56,6 +82,7 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
             // Find possible hallway positions
             val result = mutableMapOf<Position, Int>()
             hallwayPositions.forEach { hw ->
+                logger.debug("Search way for $amp to reach hallway $hw")
                 getSteps(amp, hw)?.let { steps ->
                     val to = move(amp, hw.toDataPoint(amp.value))
                     logger.debug("Found way for $amp to hallway $hw")
@@ -68,7 +95,7 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
         return emptyMap()
     }
 
-    fun getSteps(from: Point, to: Point): Int? {
+    private fun getSteps(from: Point, to: Point): Int? {
         logger.debug("Get Steps from $from to $to")
         if (from.x == to.x) {
             throw IllegalArgumentException("From ($from) and to ($to) might not have same x")
@@ -116,19 +143,16 @@ class Position(init: Set<DataPoint<Char>>) : HashSet<DataPoint<Char>>(init) {
         return steps
     }
 
-    fun print() : Board<Char> {
-        val board = Board(13, 5, '#')
+    fun asBoard(): Board<Char> {
+        val board = Board(13, 7, '#')
         (1..11).forEach { x ->
             board.set(x, 1, '.')
         }
-        board.set(3, 2, '.')
-        board.set(3, 3, '.')
-        board.set(5, 2, '.')
-        board.set(5, 3, '.')
-        board.set(7, 2, '.')
-        board.set(7, 3, '.')
-        board.set(9, 2, '.')
-        board.set(9, 3, '.')
+        for (x in listOf(3, 5, 7, 9)) {
+            for (y in 2..5) {
+                board.set(x, y, '.')
+            }
+        }
         forEach {
             board.set(it.x, it.y, it.value)
         }

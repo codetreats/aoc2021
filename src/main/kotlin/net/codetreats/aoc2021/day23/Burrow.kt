@@ -3,25 +3,16 @@ package net.codetreats.aoc2021.day23
 import net.codetreats.aoc2021.common.DataPoint
 import net.codetreats.aoc2021.common.Dijkstra
 import net.codetreats.aoc2021.common.EdgeDistance
-import net.codetreats.aoc2021.common.Point
-import net.codetreats.aoc2021.day21.QuantumSimulator
 import net.codetreats.aoc2021.util.Logger
-import java.lang.IllegalArgumentException
 import kotlin.math.min
 
 class Burrow(val start: Position) {
     private val logger: Logger = Logger.forDay(23, Burrow::class.java.simpleName)
 
-    private val endPosition: Position = Position(setOf(
-        DataPoint(3, 2, 'A'),
-        DataPoint(3, 3, 'A'),
-        DataPoint(5, 2, 'B'),
-        DataPoint(5, 3, 'B'),
-        DataPoint(7, 2, 'C'),
-        DataPoint(7, 3, 'C'),
-        DataPoint(9, 2, 'D'),
-        DataPoint(9, 3, 'D')
-    ))
+    private val endPosition: Position = Position((2..5).map {
+        listOf(DataPoint(3, it, 'A'), DataPoint(5, it, 'B'), DataPoint(7, it, 'C'), DataPoint(9, it, 'D'))
+    }.flatten().toSet())
+
     fun shortestPath(): Int {
         val visitedPositions = mutableMapOf<Position, Int>()
         val positionsToCheck = mutableListOf<Position>()
@@ -29,7 +20,7 @@ class Burrow(val start: Position) {
 
         visitedPositions[start] = 0
         positionsToCheck.add(start)
-        logger.info("Start with $start in ${visitedPositions.keys}")
+        logger.info("Start with ${start.asBoard()}")
 
         while (positionsToCheck.isNotEmpty()) {
             val position = positionsToCheck.removeAt(0)
@@ -38,7 +29,7 @@ class Burrow(val start: Position) {
             val possiblePositions = getEdges(position)
             possiblePositions.forEach {
                 logger.debug("Found way to")
-                logger.debug("${it.key.print()}")
+                logger.debug("${it.key.asBoard()}")
                 if (!visitedPositions.containsKey(it.key)) {
                     visitedPositions[it.key] = visitedPositions.size
                     positionsToCheck.add(it.key)
@@ -55,7 +46,7 @@ class Burrow(val start: Position) {
         val shortest = Dijkstra().shortestPath(visitedPositions.size, 0, end, edges)
         shortest.shortestPath(0, end).forEach {node ->
             visitedPositions.filter { it.value == node }.forEach {
-                logger.info(it.key.print())
+                logger.info(it.key.asBoard())
             }
         }
         return shortest.length
