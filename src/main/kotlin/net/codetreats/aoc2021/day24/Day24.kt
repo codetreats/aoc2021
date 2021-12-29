@@ -9,23 +9,18 @@ class Day24 : Day<List<Operation>>(24) {
 
     override val useDummy = false
 
-    override fun convert(input: List<String>): List<Operation> = input.map { Operation.from(it) }
-
-    override fun run1(): String {
-        val alu = Alu(input)
-        var  input = 99_999_999_999_999L
-        logger.info(Input.from(input))
-
-        while (true) {
-            if (alu.check(input)) {
-                return input.toString()
-            }
-            input--
+    override fun convert(input: List<String>): List<Operation> {
+        Operation.reset()
+        return input.map {
+            Operation.from(it).also { op -> logger.info(op) }
         }
-        throw IllegalStateException("This point should never be reached")
     }
 
-    override fun run2(): String {
-        return ""
+    private val monads by lazy {
+        MonadGenerator().solve()
     }
+
+    override fun run1(): String = monads.last()
+
+    override fun run2(): String = monads.first()
 }
